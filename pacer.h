@@ -24,7 +24,7 @@ public:
     close();
   }
 
-  void set_period_ns(long int nanoseconds)
+  void set_period_ns(long nanoseconds)
   {
     if (fd == -1)
     {
