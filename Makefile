@@ -10,10 +10,10 @@ EIGEN_NAME = eigen3
 CPPFLAGS += $(shell pkg-config --cflags $(EIGEN_NAME))
 
 # All warnings
-CPPFLAGS += -Wall -Werror -Wextra -Wno-ignored-attributes
+CPPFLAGS += -Wall -Werror -Wextra
 
 # Use a modern language
-CPPFLAGS += -std=c++17
+CPPFLAGS += -std=c++11
 
 # Use boost libraries
 LDLIBS += -lboost_program_options
@@ -22,7 +22,7 @@ LDLIBS += -lboost_program_options
 #CPPFLAGS += -g -rdynamic
 
 # Optimize the code.
-CPPFLAGS += -O3 -march=native
+CPPFLAGS += -O3
 
 # Generate .d files with dependency info
 CPPFLAGS += -MD -MP

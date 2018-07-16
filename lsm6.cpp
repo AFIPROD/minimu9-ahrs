@@ -50,7 +50,7 @@ void lsm6::handle::write_reg(reg_addr addr, uint8_t value)
 
 void lsm6::handle::read_gyro()
 {
-  uint8_t block[6];
+  char block[6];
   i2c.write_byte_and_read(config.i2c_address,
     OUTX_L_G, block, sizeof(block));
   g[0] = (int16_t)(block[0] | block[1] << 8);
@@ -60,7 +60,7 @@ void lsm6::handle::read_gyro()
 
 void lsm6::handle::read_acc()
 {
-  uint8_t block[6];
+  char block[6];
   i2c.write_byte_and_read(config.i2c_address,
     OUTX_L_XL, block, sizeof(block));
   a[0] = (int16_t)(block[0] | block[1] << 8);

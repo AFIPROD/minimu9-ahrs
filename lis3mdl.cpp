@@ -41,7 +41,7 @@ void lis3mdl::handle::enable()
 
 void lis3mdl::handle::read()
 {
-  uint8_t block[6];
+  char block[6];
   i2c.write_byte_and_read(config.i2c_address,
     0x80 | OUT_X_L, block, sizeof(block));
   m[0] = (int16_t)(block[0] | block[1] << 8);

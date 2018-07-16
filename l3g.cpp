@@ -31,7 +31,7 @@ uint8_t l3g::handle::read_reg(uint8_t reg)
 
 void l3g::handle::read()
 {
-  uint8_t block[6];
+  char block[6];
   i2c.write_byte_and_read(config.i2c_address,
     0x80 | OUT_X_L, block, sizeof(block));
 

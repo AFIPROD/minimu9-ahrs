@@ -2,7 +2,6 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
-#include <linux/i2c.h>
 #include <unistd.h>
 #include <cerrno>
 #include <cstring>
@@ -53,8 +52,8 @@ void i2c_bus::close() {
   }
 }
 
-void i2c_bus::write_byte_and_read(uint8_t address, uint8_t command,
-                                  uint8_t* data, uint16_t size) {
+void i2c_bus::write_byte_and_read(uint8_t address, char command,
+                                  char* data, short size) {
   i2c_msg messages[2] = {{address, 0, 1, &command},
                          {address, I2C_M_RD, size, data}};
   i2c_rdwr_ioctl_data ioctl_data = {messages, 2};
@@ -66,7 +65,7 @@ void i2c_bus::write_byte_and_read(uint8_t address, uint8_t command,
   }
 }
 
-void i2c_bus::write(uint8_t address, uint8_t* data, uint16_t size) {
+void i2c_bus::write(uint8_t address, char* data, short size) {
   i2c_msg messages[1] = {{address, 0, size, data}};
   i2c_rdwr_ioctl_data ioctl_data = {messages, 1};
 
@@ -77,8 +76,8 @@ void i2c_bus::write(uint8_t address, uint8_t* data, uint16_t size) {
   }
 }
 
-int i2c_bus::try_write_byte_and_read(uint8_t address, uint8_t byte,
-                                     uint8_t* data, uint16_t size) {
+int i2c_bus::try_write_byte_and_read(uint8_t address, char byte,
+                                     char* data, short size) {
   i2c_msg messages[2] = {
       {address, 0, 1, &byte},
       {address, I2C_M_RD, size, data},

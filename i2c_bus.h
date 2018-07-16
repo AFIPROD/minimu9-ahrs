@@ -27,30 +27,30 @@ public:
   void open_from_fd(int other_fd);
   void close();
 
-  void write_byte_and_read(uint8_t address, uint8_t byte,
-    uint8_t * data, uint16_t size);
+  void write_byte_and_read(uint8_t address, char byte,
+    char * data, short size);
 
-  void write(uint8_t device_address, uint8_t * data, uint16_t size);
+  void write(uint8_t device_address, char * data, short size);
 
-  int try_write_byte_and_read(uint8_t address, uint8_t byte,
-    uint8_t * data, uint16_t size);
+  int try_write_byte_and_read(uint8_t address, char byte,
+    char * data, short size);
 
-  void write_two_bytes(uint8_t address, uint8_t byte1, uint8_t byte2)
+  void write_two_bytes(uint8_t address, char byte1, char byte2)
   {
-    uint8_t buffer[] = { byte1, byte2 };
+    char buffer[] = { byte1, byte2 };
     write(address, buffer, 2);
   }
 
   uint8_t write_byte_and_read_byte(uint8_t address, uint8_t byte1)
   {
-    uint8_t byte2;
+    char byte2;
     write_byte_and_read(address, byte1, &byte2, 1);
     return byte2;
   }
 
   int try_write_byte_and_read_byte(uint8_t address, uint8_t byte1) noexcept
   {
-    uint8_t byte2;
+    char byte2;
     int result = try_write_byte_and_read(address, byte1, &byte2, 1);
     if (result < 0) { return result; }
     return byte2;

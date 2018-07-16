@@ -121,7 +121,7 @@ void lsm303::handle::enable()
 
 void lsm303::handle::read_acc()
 {
-  uint8_t block[6];
+  char block[6];
   i2c.write_byte_and_read(config.i2c_address_acc,
     0x80 | OUT_X_L_A, block, sizeof(block));
   a[0] = (int16_t)(block[0] | block[1] << 8);
@@ -131,7 +131,7 @@ void lsm303::handle::read_acc()
 
 void lsm303::handle::read_mag()
 {
-  uint8_t block[6];
+  char block[6];
 
   if (config.device == LSM303D)
   {
