@@ -12,6 +12,8 @@
 #include "lis3mdl.h"
 #include "sensor_set.h"
 
+#define UNUSED(x) (void)(x)
+
 namespace minimu9
 {
   // Represents the sensors of the MinIMU-9 and how to communicate with them.

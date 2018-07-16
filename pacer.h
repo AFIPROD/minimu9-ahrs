@@ -35,9 +35,7 @@ public:
       }
     }
 
-    struct itimerspec spec = { 0 };
-    spec.it_value.tv_nsec = 1;
-    spec.it_interval.tv_nsec = 20000000;
+    struct itimerspec spec = { {0, nanoseconds}, {0, 1} };
     int result = timerfd_settime(fd, 0, &spec, NULL);
     if (result == -1)
     {
