@@ -55,14 +55,14 @@ void output_euler(quaternion& rotation) {
                         (180 / M_PI));
 }
 
-void stream_raw_values(imu& imu) {
+void stream_raw_values(imu& imu, int samplerate) {
   imu.enable();
   while (1) {
     imu.read_raw();
     printf("%7d %7d %7d  %7d %7d %7d  %7d %7d %7d\n", imu.m[0], imu.m[1],
            imu.m[2], imu.a[0], imu.a[1], imu.a[2], imu.g[0], imu.g[1],
            imu.g[2]);
-    usleep(20 * 1000);
+    usleep(1000000/samplerate);
   }
 }
 
@@ -145,7 +145,8 @@ void fuse_default(quaternion& rotation, float dt,
   rotate(rotation, angular_velocity + correction, dt);
 }
 
-void ahrs(imu& imu, fuse_function* fuse, rotation_output_function* output) {
+void ahrs(imu& imu, fuse_function* fuse, rotation_output_function* output,
+          int samplerate) {
   imu.load_calibration();
   imu.enable();
   imu.measure_offsets();
@@ -154,9 +155,9 @@ void ahrs(imu& imu, fuse_function* fuse, rotation_output_function* output) {
   // to ground coordinates when it its changed to a matrix.
   quaternion rotation = quaternion::Identity();
 
-  // Set up a timer that expires every 20 ms.
+  // Set up a timer that expires every 1000000000/samplerate ns
   pacer loop_pacer;
-  loop_pacer.set_period_ns(20000000);
+  loop_pacer.set_period_ns(1000000000 / samplerate);
 
   auto start = std::chrono::steady_clock::now();
   while (1) {
@@ -239,13 +240,13 @@ int main_with_exceptions(int argc, char** argv) {
 
   // Figure out the basic operating mode and start running.
   if (options.mode == "raw") {
-    stream_raw_values(imu);
+    stream_raw_values(imu, options.samplerate);
   } else if (options.mode == "gyro-only") {
-    ahrs(imu, &fuse_gyro_only, output);
+    ahrs(imu, &fuse_gyro_only, output, options.samplerate);
   } else if (options.mode == "compass-only") {
-    ahrs(imu, &fuse_compass_only, output);
+    ahrs(imu, &fuse_compass_only, output, options.samplerate);
   } else if (options.mode == "normal") {
-    ahrs(imu, &fuse_default, output);
+    ahrs(imu, &fuse_default, output, options.samplerate);
   } else {
     std::cerr << "Unknown mode '" << options.mode << "'" << std::endl;
     return 1;
